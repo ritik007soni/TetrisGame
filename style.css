@@ -3,8 +3,12 @@
     padding: 0px;
 }
 
+body{
+    text-align: center;
+}
+
 .grid{
-    width: 1000px;
+    width: 1200px;
     height: 600px;
     display: flex;
     flex-wrap: wrap;
@@ -26,4 +30,12 @@
     justify-content: center;
     border: 1px solid black;
     border-radius: 3px;
+}
+
+#start-button{
+    left: 50px;
+    width: fit-content;
+    height: fit-content;
+    padding: 2px;
+    margin: 10px;
 }

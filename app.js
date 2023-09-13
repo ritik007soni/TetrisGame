@@ -1,9 +1,10 @@
 document.addEventListener('DOMContentLoaded',() =>{
     const grid = document.querySelector(".grid");
     let squares = document.querySelectorAll(".grid div");
-    const width = 25;
-    let curr = 4;
-
+    const startBtn = document.querySelector('#start-button')
+    const width = 30;
+    let curr = 10;
+    let score = 0;
     const dashTatris = [1,2,3,4];
     const words = ["We","design","develop","applications","that","run","the","world","and","showcase" ,"future"];
 
@@ -67,6 +68,7 @@ document.addEventListener('DOMContentLoaded',() =>{
                 randomWordLength = words[random].length;
                 curr = 4;
                 draw(); 
+                addScore();
                 break;
             }
         }
@@ -110,23 +112,111 @@ document.addEventListener('DOMContentLoaded',() =>{
         draw();
     }
 
-    // function addScore(){
-    //     for(let i=0;i<375;i+=width){
-    //         const row = [i,i+1,i+2,i+3,i+4,i+5,i+6,i+7,i+8,i+9,i+10,i+11,i+12,i+13,i+14];
+    startBtn.addEventListener('click', () => {
+        if (timerId) {
+          clearInterval(timerId)
+          timerId = null
+        } else {
+          draw()
+          timerId = setInterval(moveDown, 1000)
+        //   nextRandom = Math.floor(Math.random()*theTetrominoes.length)
+        //   displayShape()
+        }
+      })
 
-    //         //for each taken boxes of each row
-    //         for(let j=0;j<25;j++){
-    //             let phrase = "";
-    //             while(squares[i+j].classList.contains('taken') && (i+j-1)%width <= width-1){
-    //                 phrase += squares[i+j].innerText;
-    //                 j++;
-    //             }
+    function addScore(){
+        for(let i=0;i<450;i+=width){
+            // const row = [i,i+1,i+2,i+3,i+4,i+5,i+6,i+7,i+8,i+9,i+10,i+11,i+12,i+13,i+14];
 
-    //             if(phrase !== ""){
-    //                 //check pattern using kmp;
-    //             }
-    //         }
-    //     }
-    // }
+            //for each taken boxes of each row
+            for(let j=0;j<30;j++){
+                let phrase = "";
+                while(squares[i+j].classList.contains('taken') && (i+j-1)%width <= width-1){
+                    phrase += squares[i+j].innerText;
+                    j++;
+                }
+
+                if(phrase !== ""){
+                    //check pattern using kmp;
+                    const phrases = ["Wedesignanddevelopapplications","thatruntheworldand","showcasethefuture"];
+                    for(let k=0;k<3;k++){
+                        // kmp
+                        let patternIndex = strStr(phrase,phrase[k]);
+                        //if phrase found
+                        if(patternIndex !== -1){
+                            score += 30;
+
+                            //remove taken tag form all boxes 
+                            for(let box = curr+patternIndex;box<(phrase.length+patternIndex+curr);box++){
+                                squares[box].classList.remove('taken');
+                                squares[box].classList.innerText = "";
+                            }
+                            squares = squares.splice(curr+patternIndex,phrase.length+patternIndex+curr);
+                            squares.forEach(cell => grid.appendChild(cell))
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+    // ______________________________________________KMP______________________________________________________
+    function strStr(str, pat) {
+        let n = str.length;
+        let m = pat.length;
+
+        if (m > n)
+            return -1;
+
+        let lps = new Array(m);
+        fillLPS(pat,lps);
+
+        let i=0;
+        let j=0;
+        while(i < n){
+            if(str.charAt(i) == pat.charAt(j)){
+                i++;
+                j++;
+
+                //complete pattern matches
+                if(j == m)
+                    return i-m;
+            }
+            else{
+                if(j==0){
+                    i++;
+                }
+                else{
+                    j = lps[j-1];
+                }
+            }
+        }
+
+        return -1;
+
+    }
+
+    function fillLPS(str,lps){
+        let n = str.length;
+        let i=1,len=0;
+
+        while(i < n){
+            if(str.charAt(i) === str.charAt(len)){
+                len++;
+                lps[i] = len;
+                i++;
+            }
+            else{
+                if(len === 0){
+                    lps[i] = 0;
+                    i++;
+                }
+                else{
+                    len = lps[len-1];
+                }
+            }
+        }
+    }
 
 })
