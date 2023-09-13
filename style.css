@@ -1,0 +1,29 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+
+.grid{
+    width: 1000px;
+    height: 600px;
+    display: flex;
+    flex-wrap: wrap;
+    background-color: #252424;
+}
+
+.grid div{
+    height: 40px;
+    width: 40px;
+    box-sizing: border-box;
+    /* background-color: #524c4c; */
+}
+
+.tetromino{
+    background-color: greenyellow;
+    color: black;
+    font-size: large;
+    text-align: center;
+    justify-content: center;
+    border: 1px solid black;
+    border-radius: 3px;
+}
