@@ -19,8 +19,14 @@ body{
 .grid div{
     height: 40px;
     width: 40px;
+    border: 1px solid black;
+    border-radius: 3px;
     box-sizing: border-box;
     /* background-color: #524c4c; */
+}
+
+.grid .taken{
+    border: none;
 }
 
 .tetromino{
